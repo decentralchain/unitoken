@@ -1,6 +1,6 @@
-import WavesDockerKeys._
+import unitokenDockerKeys._
 
-enablePlugins(WavesDockerPlugin, IntegrationTestsPlugin)
+enablePlugins(unitokenDockerPlugin, IntegrationTestsPlugin)
 
 description := "NODE integration tests"
 libraryDependencies ++= Dependencies.it
@@ -12,13 +12,13 @@ def stageFiles(ref: ProjectReference): TaskKey[File] =
 
 inTask(docker)(
   Seq(
-    imageNames := Seq(ImageName("com.wavesplatform/node-it")),
+    imageNames := Seq(ImageName("com.decentralchain/node-it")),
     exposedPorts := Set(6863, 6869, 6870), // NetworkApi, RestApi, gRPC
     additionalFiles ++= Seq(
       stageFiles(LocalProject("node")).value,
       stageFiles(LocalProject("grpc-server")).value,
       (Test / resourceDirectory).value / "template.conf",
-      (Test / sourceDirectory).value / "container" / "start-waves.sh"
+      (Test / sourceDirectory).value / "container" / "start-unitoken.sh"
     )
   )
 )

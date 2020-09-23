@@ -96,14 +96,14 @@ object Dependencies {
       ("org.typelevel" %% "cats-mtl-core" % "0.7.1").exclude("org.scalacheck", "scalacheck_2.13"),
       "ch.obermuhlner" % "big-math" % "2.1.0",
       ("org.scorexfoundation" %% "scrypto" % "2.1.8").exclude("org.whispersystems", "curve25519-java"),
-      "com.wavesplatform" % "curve25519-java" % "0.6.3",
+      "com.decentralchain" % "curve25519-java" % "0.6.3",
       bouncyCastle("bcpkix"),
       bouncyCastle("bcprov"),
       kindProjector,
       compilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1"),
       "com.softwaremill.sttp" %%% "core"       % "1.6.4",
-      "com.wavesplatform"     % "zwaves"       % "0.1.0-SNAPSHOT",
-      "com.wavesplatform"     % "zwaves-bn256" % "0.1.5-SNAPSHOT",
+      "com.decentralchain"     % "zunitoken"       % "0.1.0-SNAPSHOT",
+      "com.decentralchain"     % "zunitoken-bn256" % "0.1.5-SNAPSHOT",
       "org.web3j"             % "crypto"       % "4.5.18"
     ) ++ scalapbRuntime.value ++ circe.value ++ protobuf.value
   )
@@ -131,8 +131,8 @@ object Dependencies {
   private[this] val levelDBJNA = {
     val levelDbVersion = "1.22.3"
     Seq(
-      "com.wavesplatform.leveldb-jna" % "leveldb-jna-core"   % levelDbVersion,
-      "com.wavesplatform.leveldb-jna" % "leveldb-jna-native" % levelDbVersion
+      "com.decentralchain.leveldb-jna" % "leveldb-jna-core"   % levelDbVersion,
+      "com.decentralchain.leveldb-jna" % "leveldb-jna-native" % levelDbVersion
     )
   }
 
@@ -164,7 +164,7 @@ object Dependencies {
   )
 
   private[this] val protoSchemasLib =
-    "com.wavesplatform" % "protobuf-schemas" % "1.2.6" classifier "proto"
+    "com.decentralchain" % "protobuf-schemas" % "1.2.6" classifier "proto"
 
   lazy val scalapbRuntime = Def.setting {
     val version = scalapb.compiler.Version.scalapbVersion

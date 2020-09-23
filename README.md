@@ -1,84 +1,84 @@
-<h1 align="center">🔷 Waves Platform Node</h1>
+<h1 align="center">🔷 unitoken Platform Node</h1>
 
 <p align="center">
 
-  <a href="https://travis-ci.org/wavesplatform/Waves" target="_blank">
-    <img alt="Build status" src="https://travis-ci.org/wavesplatform/Waves.svg?branch=master"  />
+  <a href="https://travis-ci.org/decentralchain/unitoken" target="_blank">
+    <img alt="Build status" src="https://travis-ci.org/decentralchain/unitoken.svg?branch=master"  />
   </a>
-  <a href="https://github.com/wavesplatform/Waves/releases" target="_blank">
-    <img alt="Downloads" src="https://img.shields.io/github/downloads/wavesplatform/Waves/total?cache=false&style=flat-square&style=flat-square" />
+  <a href="https://github.com/decentralchain/unitoken/releases" target="_blank">
+    <img alt="Downloads" src="https://img.shields.io/github/downloads/decentralchain/unitoken/total?cache=false&style=flat-square&style=flat-square" />
   </a>
-  <a href="https://github.com/wavesplatform/Waves/blob/master/LICENSE" target="_blank">
-    <img alt="License: MIT" src="https://badgen.net/github/license/wavesplatform/Waves"/>
+  <a href="https://github.com/decentralchain/unitoken/blob/master/LICENSE" target="_blank">
+    <img alt="License: MIT" src="https://badgen.net/github/license/decentralchain/unitoken"/>
   </a>
-  <a href="https://github.com/wavesplatform/Waves/issues" target="_blank">
-    <img alt="Open Issues" src="https://badgen.net/github/open-issues/wavesplatform/Waves" />
+  <a href="https://github.com/decentralchain/unitoken/issues" target="_blank">
+    <img alt="Open Issues" src="https://badgen.net/github/open-issues/decentralchain/unitoken" />
   </a>
-  <a href="https://twitter.com/wavesplatform" target="_blank">
-    <img alt="Twitter: WavesPlatform" src="https://badgen.net/twitter/follow/wavesglobalnews" />
+  <a href="https://twitter.com/decentralchain" target="_blank">
+    <img alt="Twitter: decentralchain" src="https://badgen.net/twitter/follow/unitokenglobalnews" />
   </a>
 </p>
 
-> Waves is an open source [blockchain platform](https://wavesplatform.com/).<br /> 
-You can use it to build your own decentralised applications. Waves provides full blockchain ecosystem including smart contracts language called RIDE.
+> unitoken is an open source [blockchain platform](https://decentralchain.com/).<br /> 
+You can use it to build your own decentralised applications. unitoken provides full blockchain ecosystem including smart contracts language called RIDE.
 
 
 ## ✨ Demo
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/1945126/78667964-88209480-78e2-11ea-9304-72178a6a5974.gif" alt="Waves Node Run Demo">
+    <img src="https://user-images.githubusercontent.com/1945126/78667964-88209480-78e2-11ea-9304-72178a6a5974.gif" alt="unitoken Node Run Demo">
 </p>
 
-Waves node is a host connected to the blockchain network with the next functions:
+unitoken node is a host connected to the blockchain network with the next functions:
 
-- Processing and validation of [transactions](https://docs.wavesplatform.com/en/blockchain/transaction/transaction-validation.html)
-- Generation and storage of [blocks](https://docs.wavesplatform.com/en/blockchain/block.html)
-- Network [communication](https://docs.wavesplatform.com/en/blockchain/transaction.html) with other nodes
-- [REST API](https://docs.wavesplatform.com/en/building-apps/how-to/basic/retrieve)
-- [Extensions](https://docs.wavesplatform.com/en/waves-node/extensions/) management
+- Processing and validation of [transactions](https://docs.decentralchain.com/en/blockchain/transaction/transaction-validation.html)
+- Generation and storage of [blocks](https://docs.decentralchain.com/en/blockchain/block.html)
+- Network [communication](https://docs.decentralchain.com/en/blockchain/transaction.html) with other nodes
+- [REST API](https://docs.decentralchain.com/en/building-apps/how-to/basic/retrieve)
+- [Extensions](https://docs.decentralchain.com/en/unitoken-node/extensions/) management
 
-Learn more about Waves Node in the [documentation](https://docs.wavesplatform.com/en/waves-node/what-is-a-full-node.html).
+Learn more about unitoken Node in the [documentation](https://docs.decentralchain.com/en/unitoken-node/what-is-a-full-node.html).
 
 ## 🚀️ Getting started
 
 A quick introduction of the minimal setup you need to get a running node. 
 
 *Prerequisites:*
-- configuration file for a needed network from [here](https://github.com/wavesplatform/Waves/tree/master/node)
-- `waves-all*.jar` file from [releases](https://github.com/wavesplatform/Waves/releases) 
+- configuration file for a needed network from [here](https://github.com/decentralchain/unitoken/tree/master/node)
+- `unitoken-all*.jar` file from [releases](https://github.com/decentralchain/unitoken/releases) 
 
 Linux systems:
 ```bash
 sudo apt-get update
 sudo apt-get install openjdk-8-jre
-java -jar node/target/waves-all*.jar path/to/config/waves-{network}.conf
+java -jar node/target/unitoken-all*.jar path/to/config/unitoken-{network}.conf
 ```
 
 Mac systems (assuming already installed homebrew):
 ```bash
 brew cask install adoptopenjdk/openjdk/adoptopenjdk8
-java -jar node/target/waves-all*.jar path/to/config/waves-{network}.conf
+java -jar node/target/unitoken-all*.jar path/to/config/unitoken-{network}.conf
 ```
 
 Windows systems (assuming already installed OpenJDK 8):
 ```bash
-java -jar node/target/waves-all*.jar path/to/config/waves-{network}.conf
+java -jar node/target/unitoken-all*.jar path/to/config/unitoken-{network}.conf
 ```
 
 Using docker image:
 ```bash
-docker run -p 6869:6869 -p 6868:6868 -e WAVES_NETWORK=MAINNET -e WAVES_LOG_LEVEL=DEBUG -e WAVES_HEAP_SIZE=2g -v YOUR_LOCAL_PATH_HERE:/waves wavesplatform/node
+docker run -p 6869:6869 -p 6868:6868 -e unitoken_NETWORK=MAINNET -e unitoken_LOG_LEVEL=DEBUG -e unitoken_HEAP_SIZE=2g -v YOUR_LOCAL_PATH_HERE:/unitoken decentralchain/node
 ```
 
-> More details on how to install a node for different platforms you can [find in the documentation](https://docs.wavesplatform.com/en/waves-node/how-to-install-a-node/how-to-install-a-node#system-requirements). 
+> More details on how to install a node for different platforms you can [find in the documentation](https://docs.decentralchain.com/en/unitoken-node/how-to-install-a-node/how-to-install-a-node#system-requirements). 
 
 ## 🔧 Configuration
 
-The best starting point to understand available configuration parameters is the [this article](https://docs.wavesplatform.com/en/waves-node/node-configuration).
+The best starting point to understand available configuration parameters is the [this article](https://docs.decentralchain.com/en/unitoken-node/node-configuration).
 
 The easiest way to start playing around with configurations is to use default configuration files for different networks, they're available [here](./node).
 
-Logging configuration with all available levels and parameters is described [here](https://docs.wavesplatform.com/en/waves-node/logging-configuration).
+Logging configuration with all available levels and parameters is described [here](https://docs.decentralchain.com/en/unitoken-node/logging-configuration).
 
 ## 👨‍💻 Development
 
@@ -104,8 +104,8 @@ Please follow the SBT installation instructions depending on your platform ([Lin
 *2. Clone this repo*
 
 ```bash
-git clone https://github.com/wavesplatform/Waves.git
-cd Waves
+git clone https://github.com/decentralchain/unitoken.git
+cd unitoken
 ```
 
 *3. Compile and run tests*
@@ -121,10 +121,10 @@ Create a Docker image before you run any test:
 sbt node-it/docker
 ```
 
-- Run all tests. You can increase or decrease number of parallel running tests by changing `waves.it.max-parallel-suites`
+- Run all tests. You can increase or decrease number of parallel running tests by changing `unitoken.it.max-parallel-suites`
 system property:
 ```bash
-sbt -Dwaves.it.max-parallel-suites=1 node-it/test
+sbt -Dunitoken.it.max-parallel-suites=1 node-it/test
 ```
 
 - Run one test:
@@ -165,7 +165,7 @@ The majority of contributors to this project use IntelliJ IDEA for development, 
 1. Click on `Add configuration` (or `Edit configurations...`)
 2. Click on `+` to add a new configuration, choose `Application`
 3. Specify:
-   - Main class: `com.wavesplatform.Application`
+   - Main class: `com.decentralchain.Application`
    - Program arguments: `/path/to/configuration`
    - Use classpath of module: `extension-module`
 4. Click on `OK`
@@ -183,18 +183,18 @@ Please follow the [code of conduct](./CODE_OF_CONDUCT.md) during communication w
 
 ## ℹ️ Support (get help)
 
-Keep up with the latest news and articles, and find out all about events happening on the [Waves Platform](https://wavesplatform.com/).
+Keep up with the latest news and articles, and find out all about events happening on the [unitoken Platform](https://decentralchain.com/).
 
-- [Telegram Dev Chat](https://t.me/waves_ride_dapps_dev)
-- [Waves Blog](https://blog.wavesplatform.com/)
+- [Telegram Dev Chat](https://t.me/unitoken_ride_dapps_dev)
+- [unitoken Blog](https://blog.decentralchain.com/)
 
 ## ⛓ Links
 
-- [Documentation](https://docs.wavesplatform.com/)
-- Blockchain clients for Mainnet: [Waves Exchange](https://waves.exchange/), [Waves FX](https://github.com/wavesfx), [SIGN app](https://www.sign-web.app/)
-- Blockchain clients for Testnet: [Waves Exchange](https://testnet.waves.exchange/)
-- Blockchain Explorer: [Mainnet](https://wavesexplorer.com/), [Testnet](https://wavesexplorer.com/testnet), [Stagenet](https://wavesexplorer.com/stagenet) 
-- [Ride Online IDE](https://ide.wavesplatform.com/)
+- [Documentation](https://docs.decentralchain.com/)
+- Blockchain clients for Mainnet: [unitoken Exchange](https://unitoken.exchange/), [unitoken FX](https://github.com/unitokenfx), [SIGN app](https://www.sign-web.app/)
+- Blockchain clients for Testnet: [unitoken Exchange](https://testnet.unitoken.exchange/)
+- Blockchain Explorer: [Mainnet](https://unitokenexplorer.com/), [Testnet](https://unitokenexplorer.com/testnet), [Stagenet](https://unitokenexplorer.com/stagenet) 
+- [Ride Online IDE](https://ide.decentralchain.com/)
 
 ## 📝 Licence
 
@@ -204,6 +204,6 @@ The code in this project is licensed under [MIT license](./LICENSE)
 
 [<img src="https://camo.githubusercontent.com/97fa03cac759a772255b93c64ab1c9f76a103681/68747470733a2f2f7777772e796f75726b69742e636f6d2f696d616765732f796b6c6f676f2e706e67">](https://www.yourkit.com/)
 
-We use YourKit full-featured Java Profiler to make Waves node faster. YourKit, LLC is the creator of innovative and intelligent tools for profiling Java and .NET applications.
+We use YourKit full-featured Java Profiler to make unitoken node faster. YourKit, LLC is the creator of innovative and intelligent tools for profiling Java and .NET applications.
 
 Take a look at YourKit's leading software products: YourKit Java Profiler and YourKit .NET Profiler.

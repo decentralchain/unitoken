@@ -1,7 +1,7 @@
 syntax = "proto3";
-package waves;
-option java_package = "com.wavesplatform.protobuf.dapp";
-option csharp_namespace = "Waves";
+package unitoken;
+option java_package = "com.decentralchain.protobuf.dapp";
+option csharp_namespace = "unitoken";
 
 message DAppMeta {
     int32 version = 1;

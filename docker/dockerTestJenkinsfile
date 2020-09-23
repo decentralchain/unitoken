@@ -1,15 +1,15 @@
 #!/usr/bin/env groovy
 import groovy.json.JsonOutput
-import devops.waves.*
+import devops.unitoken.*
 @Library('jenkins-shared-lib')
 
 ut = new utils()
 scripts = new scripts()
 def useNodeSbtCache = false
-def repoUrl = "https://github.com/wavesplatform/Waves"
+def repoUrl = "https://github.com/decentralchain/unitoken"
 def dockerImageName = "node/test"
 def testTasks=[:]
-def dockerRegistryCreds = 'dockerhub-wavesnode-creds'
+def dockerRegistryCreds = 'dockerhub-unitokennode-creds'
 
 properties([
 
@@ -62,34 +62,34 @@ timeout(time:20, unit:'MINUTES') {
                         stage("Mainnet, basic image, local.conf"){
                             dir ('mainnet'){
                                 unstash 'dockerFiles'
-                                def wavesLatestVersion=ut.shWithOutput("curl -fsSL https://api.github.com/repos/wavesplatform/Waves/releases/latest | tac | grep -m 1 'tag_name.:' | tr -cd '[0-9\\.]'")
+                                def unitokenLatestVersion=ut.shWithOutput("curl -fsSL https://api.github.com/repos/decentralchain/unitoken/releases/latest | tac | grep -m 1 'tag_name.:' | tr -cd '[0-9\\.]'")
                                 dockerImageBasic = ut.buildDockerImage('', dockerRegistryCreds, dockerImageName, 'basic', "--no-cache", true)
                                 sh """
                                 mkdir -p data config
                                 chmod -R 777 data config
-                                echo waves.rest-api.enable=yes > ./config/local.conf
-                                echo waves.rest-api.bind-address=0.0.0.0 >> ./config/local.conf
-                                echo waves.rest-api.api-key-hash=superApiKeyHash >> ./config/local.conf
-                                echo waves.network.declared-address=\\\"0.0.0.0:6868\\\" >> ./config/local.conf
+                                echo unitoken.rest-api.enable=yes > ./config/local.conf
+                                echo unitoken.rest-api.bind-address=0.0.0.0 >> ./config/local.conf
+                                echo unitoken.rest-api.api-key-hash=superApiKeyHash >> ./config/local.conf
+                                echo unitoken.network.declared-address=\\\"0.0.0.0:6868\\\" >> ./config/local.conf
                                 docker run -d --rm --name node_mainnet \
-                                -v "${env.WORKSPACE}/mainnet/data":/var/lib/waves \
-                                -v "${env.WORKSPACE}/mainnet/config":/etc/waves \
-                                -e WAVES_WALLET_PASSWORD=myNewWalletSuperPassword \
-                                -e WAVES_WALLET_SEED=599RbZ7JZPF3dYRtBNyBtyXzeiU7LhFMtQ1EwFCWYXec1pVNWM8nQrz516arCUko6RvPpEryHFK4Ew7La3sjGdoN \
+                                -v "${env.WORKSPACE}/mainnet/data":/var/lib/unitoken \
+                                -v "${env.WORKSPACE}/mainnet/config":/etc/unitoken \
+                                -e unitoken_WALLET_PASSWORD=myNewWalletSuperPassword \
+                                -e unitoken_WALLET_SEED=599RbZ7JZPF3dYRtBNyBtyXzeiU7LhFMtQ1EwFCWYXec1pVNWM8nQrz516arCUko6RvPpEryHFK4Ew7La3sjGdoN \
                                 -p 6869:6869 -p 6868:6868 \
                                 ${dockerImageName}:basic
                                 while true ; do
-                                    grep "Custom '/etc/waves/waves.conf' not found. Using a default one for 'mainnet' network." ./data/log/waves.log &&
-                                    grep "Waves v${wavesLatestVersion} Blockchain Id: W" ./data/log/waves.log &&
-                                    grep "WAVES_VERSION='${wavesLatestVersion}'" ./data/log/waves.log &&
-                                    grep "WAVES_NETWORK='mainnet'" ./data/log/waves.log &&
-                                    grep "WAVES_WALLET_SEED='599RbZ7JZPF3dYRtBNyBtyXzeiU7LhFMtQ1EwFCWYXec1pVNWM8nQrz516arCUko6RvPpEryHFK4Ew7La3sjGdoN'" ./data/log/waves.log &&
-                                    grep "WAVES_WALLET_PASSWORD='myNewWalletSuperPassword'" ./data/log/waves.log &&
-                                    grep "Added account" ./data/log/waves.log &&
-                                    grep "REST API was bound on 0.0.0.0:6869" ./data/log/waves.log && 
+                                    grep "Custom '/etc/unitoken/unitoken.conf' not found. Using a default one for 'mainnet' network." ./data/log/unitoken.log &&
+                                    grep "unitoken v${unitokenLatestVersion} Blockchain Id: W" ./data/log/unitoken.log &&
+                                    grep "unitoken_VERSION='${unitokenLatestVersion}'" ./data/log/unitoken.log &&
+                                    grep "unitoken_NETWORK='mainnet'" ./data/log/unitoken.log &&
+                                    grep "unitoken_WALLET_SEED='599RbZ7JZPF3dYRtBNyBtyXzeiU7LhFMtQ1EwFCWYXec1pVNWM8nQrz516arCUko6RvPpEryHFK4Ew7La3sjGdoN'" ./data/log/unitoken.log &&
+                                    grep "unitoken_WALLET_PASSWORD='myNewWalletSuperPassword'" ./data/log/unitoken.log &&
+                                    grep "Added account" ./data/log/unitoken.log &&
+                                    grep "REST API was bound on 0.0.0.0:6869" ./data/log/unitoken.log && 
                                     curl -fsSL 127.0.0.1:6869 | grep swagger &&
                                     curl 127.0.0.1:6868 || true &&
-                                    grep "Blacklisting.*172.17.*Timeout expired while waiting for handshake" data/log/waves.log && break ||
+                                    grep "Blacklisting.*172.17.*Timeout expired while waiting for handshake" data/log/unitoken.log && break ||
                                     sleep 10
                                 done
                                 """
@@ -100,28 +100,28 @@ timeout(time:20, unit:'MINUTES') {
                         stage("Testnet, version image, default envs"){
                             dir ('testnet'){
                                 unstash 'dockerFiles'
-                                def wavesVersion=ut.shWithOutput("curl -fsSL https://api.github.com/repos/wavesplatform/Waves/releases | tac | grep  'tag_name.:' | tail -n 3 | cut -dv -f2 | cut -d\\\" -f1 | shuf -n 1")
-                                println "random version: ${wavesVersion}"
-                                def dockerImageVersion = ut.buildDockerImage('', dockerRegistryCreds, dockerImageName, 'version', "--build-arg WAVES_VERSION=${wavesVersion} --no-cache", true)
+                                def unitokenVersion=ut.shWithOutput("curl -fsSL https://api.github.com/repos/decentralchain/unitoken/releases | tac | grep  'tag_name.:' | tail -n 3 | cut -dv -f2 | cut -d\\\" -f1 | shuf -n 1")
+                                println "random version: ${unitokenVersion}"
+                                def dockerImageVersion = ut.buildDockerImage('', dockerRegistryCreds, dockerImageName, 'version', "--build-arg unitoken_VERSION=${unitokenVersion} --no-cache", true)
                                 sh """
                                 mkdir -p data config
                                 chmod -R 777 data config
                                 docker run -d --rm --name node_testnet \
-                                    -v "${env.WORKSPACE}/testnet/data":/var/lib/waves \
-                                    -v "${env.WORKSPACE}/testnet/config":/etc/waves \
-                                    -e WAVES_WALLET_PASSWORD=myWalletSuperPassword  \
-                                    -e WAVES_NETWORK=testnet \
+                                    -v "${env.WORKSPACE}/testnet/data":/var/lib/unitoken \
+                                    -v "${env.WORKSPACE}/testnet/config":/etc/unitoken \
+                                    -e unitoken_WALLET_PASSWORD=myWalletSuperPassword  \
+                                    -e unitoken_NETWORK=testnet \
                                     ${dockerImageName}:version
                                 while true ; do
-                                    grep "Custom '/etc/waves/waves.conf' not found. Using a default one for 'testnet' network" ./data/log/waves.log &&
-                                    grep "Waves v${wavesVersion} Blockchain Id: T" ./data/log/waves.log &&
-                                    grep "WAVES_HEAP_SIZE='2g'" ./data/log/waves.log &&
-                                    grep "WAVES_LOG_LEVEL='DEBUG'" ./data/log/waves.log &&
-                                    grep "WAVES_VERSION='${wavesVersion}'" ./data/log/waves.log &&
-                                    grep "WAVES_NETWORK='testnet'" ./data/log/waves.log &&
-                                    grep "WAVES_WALLET_SEED=''" ./data/log/waves.log &&
-                                    grep "WAVES_WALLET_PASSWORD='myWalletSuperPassword'" ./data/log/waves.log &&
-                                    grep "Added account" ./data/log/waves.log && break ||
+                                    grep "Custom '/etc/unitoken/unitoken.conf' not found. Using a default one for 'testnet' network" ./data/log/unitoken.log &&
+                                    grep "unitoken v${unitokenVersion} Blockchain Id: T" ./data/log/unitoken.log &&
+                                    grep "unitoken_HEAP_SIZE='2g'" ./data/log/unitoken.log &&
+                                    grep "unitoken_LOG_LEVEL='DEBUG'" ./data/log/unitoken.log &&
+                                    grep "unitoken_VERSION='${unitokenVersion}'" ./data/log/unitoken.log &&
+                                    grep "unitoken_NETWORK='testnet'" ./data/log/unitoken.log &&
+                                    grep "unitoken_WALLET_SEED=''" ./data/log/unitoken.log &&
+                                    grep "unitoken_WALLET_PASSWORD='myWalletSuperPassword'" ./data/log/unitoken.log &&
+                                    grep "Added account" ./data/log/unitoken.log && break ||
                                     sleep 10
                                 done
                                 """
@@ -143,33 +143,33 @@ timeout(time:20, unit:'MINUTES') {
                                     replacement="as builder\nCOPY ./.ivy2 /root/.ivy2\nCOPY ./.sbt /root/.sbt"
                                     writeFile file: "Dockerfile", text: text.replace('as builder', replacement)
                                 }
-                                def dockerImageCompile = ut.buildDockerImage('', dockerRegistryCreds, dockerImageName, 'compile', "--build-arg WAVES_VERSION=99.99.99 --build-arg 'DEB_PACKCAGE_NETWORKS=mainnet testnet stagenet' --build-arg BRANCH=${branch} --no-cache", true)
+                                def dockerImageCompile = ut.buildDockerImage('', dockerRegistryCreds, dockerImageName, 'compile', "--build-arg unitoken_VERSION=99.99.99 --build-arg 'DEB_PACKCAGE_NETWORKS=mainnet testnet stagenet' --build-arg BRANCH=${branch} --no-cache", true)
                                 sh """
                                 mkdir -p data config
                                 chmod -R 777 data config
                                 docker run -d --rm --name node_stagenet \
-                                -v "${env.WORKSPACE}/stagenet/data":/var/lib/waves \
-                                -v "${env.WORKSPACE}/stagenet/config":/etc/waves \
-                                -e WAVES_WALLET_PASSWORD=myNewWalletSuperPassword \
-                                -e WAVES_WALLET_SEED=599RbZ7JZPF3dYRtBNyBtyXzeiU7LhFMtQ1EwFCWYXec1pVNWM8nQrz516arCUko6RvPpEryHFK4Ew7La3sjGdoN \
-                                -e WAVES_NETWORK=stagenet \
-                                -e WAVES_LOG_LEVEL=INFO \
-                                -e WAVES_HEAP_SIZE=3g \
-                                -e JAVA_OPTS="-Dwaves.rest-api.enable=yes -Dwaves.rest-api.port=6870 -Dwaves.rest-api.bind-address=0.0.0.0" \
+                                -v "${env.WORKSPACE}/stagenet/data":/var/lib/unitoken \
+                                -v "${env.WORKSPACE}/stagenet/config":/etc/unitoken \
+                                -e unitoken_WALLET_PASSWORD=myNewWalletSuperPassword \
+                                -e unitoken_WALLET_SEED=599RbZ7JZPF3dYRtBNyBtyXzeiU7LhFMtQ1EwFCWYXec1pVNWM8nQrz516arCUko6RvPpEryHFK4Ew7La3sjGdoN \
+                                -e unitoken_NETWORK=stagenet \
+                                -e unitoken_LOG_LEVEL=INFO \
+                                -e unitoken_HEAP_SIZE=3g \
+                                -e JAVA_OPTS="-Dunitoken.rest-api.enable=yes -Dunitoken.rest-api.port=6870 -Dunitoken.rest-api.bind-address=0.0.0.0" \
                                 -p 6870:6870 \
                                 ${dockerImageName}:compile
                                 while true ; do
-                                    grep "Custom '/etc/waves/waves.conf' not found. Using a default one for 'stagenet' network." ./data/log/waves.log &&
-                                    grep "Waves v99.99.99 Blockchain Id: S" ./data/log/waves.log &&
-                                    grep "WAVES_HEAP_SIZE='3g'" ./data/log/waves.log &&
-                                    grep "WAVES_LOG_LEVEL='INFO'" ./data/log/waves.log &&
-                                    grep "WAVES_VERSION='99.99.99'" ./data/log/waves.log &&
-                                    grep "WAVES_NETWORK='stagenet'" ./data/log/waves.log &&
-                                    grep "'\\-Dwaves.rest-api.enable=yes \\-Dwaves.rest-api.port=6870 \\-Dwaves.rest-api.bind-address=0.0.0.0" ./data/log/waves.log &&
-                                    grep "WAVES_WALLET_SEED='599RbZ7JZPF3dYRtBNyBtyXzeiU7LhFMtQ1EwFCWYXec1pVNWM8nQrz516arCUko6RvPpEryHFK4Ew7La3sjGdoN'" ./data/log/waves.log &&
-                                    grep "WAVES_WALLET_PASSWORD='myNewWalletSuperPassword'" ./data/log/waves.log &&
-                                    grep "Added account" ./data/log/waves.log &&
-                                    grep "REST API was bound on 0.0.0.0:6870" ./data/log/waves.log && 
+                                    grep "Custom '/etc/unitoken/unitoken.conf' not found. Using a default one for 'stagenet' network." ./data/log/unitoken.log &&
+                                    grep "unitoken v99.99.99 Blockchain Id: S" ./data/log/unitoken.log &&
+                                    grep "unitoken_HEAP_SIZE='3g'" ./data/log/unitoken.log &&
+                                    grep "unitoken_LOG_LEVEL='INFO'" ./data/log/unitoken.log &&
+                                    grep "unitoken_VERSION='99.99.99'" ./data/log/unitoken.log &&
+                                    grep "unitoken_NETWORK='stagenet'" ./data/log/unitoken.log &&
+                                    grep "'\\-Dunitoken.rest-api.enable=yes \\-Dunitoken.rest-api.port=6870 \\-Dunitoken.rest-api.bind-address=0.0.0.0" ./data/log/unitoken.log &&
+                                    grep "unitoken_WALLET_SEED='599RbZ7JZPF3dYRtBNyBtyXzeiU7LhFMtQ1EwFCWYXec1pVNWM8nQrz516arCUko6RvPpEryHFK4Ew7La3sjGdoN'" ./data/log/unitoken.log &&
+                                    grep "unitoken_WALLET_PASSWORD='myNewWalletSuperPassword'" ./data/log/unitoken.log &&
+                                    grep "Added account" ./data/log/unitoken.log &&
+                                    grep "REST API was bound on 0.0.0.0:6870" ./data/log/unitoken.log && 
                                     curl -fsSL 127.0.0.1:6870 | grep swagger && break ||
                                     sleep 10
                                 done

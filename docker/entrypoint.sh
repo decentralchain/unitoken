@@ -1,50 +1,50 @@
 #!/bin/bash
 NETWORKS="mainnet testnet stagenet"
 
-mkdir -p /var/lib/waves/log
-if [ ! -f /etc/waves/waves.conf ]; then
-  echo "Custom '/etc/waves/waves.conf' not found. Using a default one for '${WAVES_NETWORK,,}' network." | tee -a /var/log/waves/waves.log
-  if [[ $NETWORKS == *"${WAVES_NETWORK,,}"* ]]; then
-    cp /usr/share/waves/conf/waves-${WAVES_NETWORK}.conf /etc/waves/waves.conf
-    sed -i 's/include "local.conf"//' /etc/waves/waves.conf
-    for f in /etc/waves/ext/*.conf; do
-      echo "Adding $f extension config to waves.conf";
-      echo "include required(\"$f\")" >> /etc/waves/waves.conf
+mkdir -p /var/lib/unitoken/log
+if [ ! -f /etc/unitoken/unitoken.conf ]; then
+  echo "Custom '/etc/unitoken/unitoken.conf' not found. Using a default one for '${unitoken_NETWORK,,}' network." | tee -a /var/log/unitoken/unitoken.log
+  if [[ $NETWORKS == *"${unitoken_NETWORK,,}"* ]]; then
+    cp /usr/share/unitoken/conf/unitoken-${unitoken_NETWORK}.conf /etc/unitoken/unitoken.conf
+    sed -i 's/include "local.conf"//' /etc/unitoken/unitoken.conf
+    for f in /etc/unitoken/ext/*.conf; do
+      echo "Adding $f extension config to unitoken.conf";
+      echo "include required(\"$f\")" >> /etc/unitoken/unitoken.conf
     done
-    echo 'include "local.conf"' >> /etc/waves/waves.conf
+    echo 'include "local.conf"' >> /etc/unitoken/unitoken.conf
   else
-    echo "Network '${WAVES_NETWORK,,}' not found. Exiting."
+    echo "Network '${unitoken_NETWORK,,}' not found. Exiting."
     exit 1
   fi
 else
-  echo "Found custom '/etc/waves/waves.conf'. Using it."
+  echo "Found custom '/etc/unitoken/unitoken.conf'. Using it."
 fi
 
-if [ "${WAVES_VERSION}" == "latest" ]; then
-  filename=$(find /usr/share/waves/lib -name waves-all* -printf '%f\n')
-  export WAVES_VERSION=$(echo ${filename##*-} | cut -d\. -f1-3)
+if [ "${unitoken_VERSION}" == "latest" ]; then
+  filename=$(find /usr/share/unitoken/lib -name unitoken-all* -printf '%f\n')
+  export unitoken_VERSION=$(echo ${filename##*-} | cut -d\. -f1-3)
 fi
 
-[ -n "${WAVES_WALLET_PASSWORD}" ] && JAVA_OPTS="${JAVA_OPTS} -Dwaves.wallet.password=${WAVES_WALLET_PASSWORD}"
-[ -n "${WAVES_WALLET_SEED}" ] && JAVA_OPTS="${JAVA_OPTS} -Dwaves.wallet.seed=${WAVES_WALLET_SEED}"
+[ -n "${unitoken_WALLET_PASSWORD}" ] && JAVA_OPTS="${JAVA_OPTS} -Dunitoken.wallet.password=${unitoken_WALLET_PASSWORD}"
+[ -n "${unitoken_WALLET_SEED}" ] && JAVA_OPTS="${JAVA_OPTS} -Dunitoken.wallet.seed=${unitoken_WALLET_SEED}"
 
-JAVA_OPTS="${JAVA_OPTS} -Dwaves.data-directory=/var/lib/waves/data -Dwaves.directory=/var/lib/waves"
+JAVA_OPTS="${JAVA_OPTS} -Dunitoken.data-directory=/var/lib/unitoken/data -Dunitoken.directory=/var/lib/unitoken"
 
-echo "Node is starting..." | tee -a /var/log/waves/waves.log
-echo "WAVES_HEAP_SIZE='${WAVES_HEAP_SIZE}'" | tee -a /var/log/waves/waves.log
-echo "WAVES_LOG_LEVEL='${WAVES_LOG_LEVEL}'" | tee -a /var/log/waves/waves.log
-echo "WAVES_VERSION='${WAVES_VERSION}'" | tee -a /var/log/waves/waves.log
-echo "WAVES_NETWORK='${WAVES_NETWORK}'" | tee -a /var/log/waves/waves.log
-echo "WAVES_WALLET_SEED='${WAVES_WALLET_SEED}'" | tee -a /var/log/waves/waves.log
-echo "WAVES_WALLET_PASSWORD='${WAVES_WALLET_PASSWORD}'" | tee -a /var/log/waves/waves.log
-echo "JAVA_OPTS='${JAVA_OPTS}'" | tee -a /var/log/waves/waves.log
+echo "Node is starting..." | tee -a /var/log/unitoken/unitoken.log
+echo "unitoken_HEAP_SIZE='${unitoken_HEAP_SIZE}'" | tee -a /var/log/unitoken/unitoken.log
+echo "unitoken_LOG_LEVEL='${unitoken_LOG_LEVEL}'" | tee -a /var/log/unitoken/unitoken.log
+echo "unitoken_VERSION='${unitoken_VERSION}'" | tee -a /var/log/unitoken/unitoken.log
+echo "unitoken_NETWORK='${unitoken_NETWORK}'" | tee -a /var/log/unitoken/unitoken.log
+echo "unitoken_WALLET_SEED='${unitoken_WALLET_SEED}'" | tee -a /var/log/unitoken/unitoken.log
+echo "unitoken_WALLET_PASSWORD='${unitoken_WALLET_PASSWORD}'" | tee -a /var/log/unitoken/unitoken.log
+echo "JAVA_OPTS='${JAVA_OPTS}'" | tee -a /var/log/unitoken/unitoken.log
 
-exec java -Dlogback.stdout.level=${WAVES_LOG_LEVEL} \
+exec java -Dlogback.stdout.level=${unitoken_LOG_LEVEL} \
   -XX:+ExitOnOutOfMemoryError \
-  -Xmx${WAVES_HEAP_SIZE} \
-  -Dlogback.file.directory=/var/log/waves \
+  -Xmx${unitoken_HEAP_SIZE} \
+  -Dlogback.file.directory=/var/log/unitoken \
   -Dconfig.override_with_env_vars=true \
   ${JAVA_OPTS} \
-  -cp "/usr/share/waves/lib/plugins/*:/usr/share/waves/lib/*" \
-  com.wavesplatform.Application \
-  /etc/waves/waves.conf
+  -cp "/usr/share/unitoken/lib/plugins/*:/usr/share/unitoken/lib/*" \
+  com.decentralchain.Application \
+  /etc/unitoken/unitoken.conf

@@ -6,7 +6,7 @@
 
 **0.3.2**
 
-* By default walletDir and dataDir located in $HOME/waves
+* By default walletDir and dataDir located in $HOME/unitoken
 
 **0.3.1**
 
@@ -22,31 +22,31 @@
 
 * peers.dat format changed. Delete old version.
 * Different HTTP status codes in replies in HTTP API were implemented
-* Waves' Scorex v1.3.2
+* unitoken' Scorex v1.3.2
 
 **0.2.0**
 
 * Peers blacklist ttl configuration via "p2p"/"blacklistResidenceTimeMilliseconds"
-* Upgrade to Waves' Scorex v1.3.1
+* Upgrade to unitoken' Scorex v1.3.1
 
 **0.2.0-RC7**
 
-* New API /waves/payment returns senderPublicKey
-* New API /waves/create-signed-payment
-* /waves/external-payment deprecated. 
-  Use new /waves/broadcast-signed-payment.
-* New API /waves/payment/signature
+* New API /unitoken/payment returns senderPublicKey
+* New API /unitoken/create-signed-payment
+* /unitoken/external-payment deprecated. 
+  Use new /unitoken/broadcast-signed-payment.
+* New API /unitoken/payment/signature
 * minimumTxFee verification for API
 
 **0.2.0-RC5**
 
-* /waves/external-payment returns error for incorrect recipient
+* /unitoken/external-payment returns error for incorrect recipient
 
 **0.2.0-RC4**
 
 * Fixed issue with incorrect Handshake
 * Balance with confirmations is the minimum balance
-* /waves/external-payment returns error if account balance invalid
+* /unitoken/external-payment returns error if account balance invalid
 * New API method /consensus/generatingbalance/{address}
 
 **0.2.0-RC3**
@@ -64,4 +64,4 @@
 
 **0.1.2**
 
-* Upgrade to Scorex 1.2.4. Clean /scorex/waves/data/ before run.
+* Upgrade to Scorex 1.2.4. Clean /scorex/unitoken/data/ before run.

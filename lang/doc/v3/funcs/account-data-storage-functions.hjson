@@ -64,9 +64,9 @@
       complexity: 100
     }
     {
-      name: "wavesBalance"
+      name: "unitokenBalance"
       params: [ "Address|Alias" ]
-      doc: "Gets account balance in [WAVES](/blockchain/token/waves.md)."
+      doc: "Gets account balance in [unitoken](/blockchain/token/unitoken.md)."
       paramsDoc: [ "[Address](/blockchain/address.md) or [alias](/blockchain/alias.md) of the account." ]
       complexity: 109
     }
