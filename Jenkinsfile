@@ -1,10 +1,10 @@
 #!/usr/bin/env groovy
 
 @Library('jenkins-shared-lib')
-import devops.unitoken.*
+import devops.waves.*
 ut = new utils()
 def buildTasks = [:]
-def repo_url = 'https://github.com/decentralchain/unitoken.git'
+def repo_url = 'https://github.com/wavesplatform/Waves.git'
 
 properties([
     parameters([
@@ -42,7 +42,7 @@ if (currentBuild.result == Constants.PIPELINE_ABORTED){
 }
 
 timeout(time:90, unit:'MINUTES') {
-    node('unitokennode'){
+    node('wavesnode'){
         currentBuild.result = Constants.PIPELINE_SUCCESS
         timestamps {
             wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
@@ -69,7 +69,7 @@ timeout(time:90, unit:'MINUTES') {
                         }
 
                         stage('Check containers') {
-                            sh 'docker rmi com.decentralchain/it com.decentralchain/node-it com.decentralchain/dex-it || true'
+                            sh 'docker rmi com.wavesplatform/it com.wavesplatform/node-it com.wavesplatform/dex-it || true'
                             sh 'docker ps -a'
                             sh 'docker images'
                             sh 'docker network ls'

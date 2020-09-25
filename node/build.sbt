@@ -48,7 +48,7 @@ val aopMerge: MergeStrategy = new MergeStrategy {
 inTask(assembly)(
   Seq(
     test := {},
-    assemblyJarName := s"unitoken-all-${version.value}.jar",
+    assemblyJarName := s"waves-all-${version.value}.jar",
     assemblyMergeStrategy := {
       case "module-info.class"                                  => MergeStrategy.discard
       case PathList("META-INF", "io.netty.versions.properties") => MergeStrategy.concat
@@ -59,15 +59,15 @@ inTask(assembly)(
 )
 
 scriptClasspath += "*" // adds "$lib_dir/*" to app_classpath in the executable file
-// Logback creates a "unitoken.directory_UNDEFINED" without this option.
+// Logback creates a "waves.directory_UNDEFINED" without this option.
 bashScriptExtraDefines ++= Seq(
-  s"""addJava "-Dunitoken.defaults.blockchain.type=${network.value}"""",
-  s"""addJava "-Dunitoken.defaults.directory=/var/lib/${(Universal / normalizedName).value}"""",
-  s"""addJava "-Dunitoken.defaults.config.directory=/etc/${(Universal / normalizedName).value}""""
+  s"""addJava "-Dwaves.defaults.blockchain.type=${network.value}"""",
+  s"""addJava "-Dwaves.defaults.directory=/var/lib/${(Universal / normalizedName).value}"""",
+  s"""addJava "-Dwaves.defaults.config.directory=/etc/${(Universal / normalizedName).value}""""
 );
 inConfig(Universal)(
   Seq(
-    mappings += (baseDirectory.value / s"unitoken-sample.conf" -> "doc/unitoken.conf.sample"),
+    mappings += (baseDirectory.value / s"waves-sample.conf" -> "doc/waves.conf.sample"),
     mappings := {
       val linuxScriptPattern = "bin/(.+)".r
       val batScriptPattern   = "bin/([^.]+)\\.bat".r
@@ -104,15 +104,15 @@ inConfig(Universal)(
 
 inConfig(Linux)(
   Seq(
-    maintainer := "decentralchain.com",
-    packageSummary := "unitoken node",
-    packageDescription := "unitoken node"
+    maintainer := "wavesplatform.com",
+    packageSummary := "Waves node",
+    packageDescription := "Waves node"
   )
 )
 
 // Variable options are used in different tasks and configs, so we will specify all of them
 val nameFix = Seq(
-  name := "unitoken",
+  name := "waves",
   packageName := s"${name.value}${network.value.packageSuffix}",
   normalizedName := s"${name.value}${network.value.packageSuffix}"
 )
@@ -146,12 +146,12 @@ inConfig(Debian)(
   ) ++ nameFix
 )
 
-V.scalaPackage := "com.decentralchain"
+V.scalaPackage := "com.wavesplatform"
 
 // Hack for https://youtrack.jetbrains.com/issue/SCL-15210
 
-moduleName := s"unitoken${network.value.packageSuffix}" // unitoken-*.jar instead of node-*.jar
-executableScriptName := moduleName.value             // bin/unitoken instead of bin/node
+moduleName := s"waves${network.value.packageSuffix}" // waves-*.jar instead of node-*.jar
+executableScriptName := moduleName.value             // bin/waves instead of bin/node
 
 nameFix
 inScope(Global)(nameFix)

@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-import devops.unitoken.*
+import devops.waves.*
 @Library('jenkins-shared-lib')
 
 ut = new utils()
@@ -16,10 +16,10 @@ def servers = []
 def parentDir = { path -> path[0..<path.lastIndexOf('/')] }
 
 def artifactsDir = 'performance-test/out'
-def repo_url = 'https://github.com/decentralchain/unitoken.git'
+def repo_url = 'https://github.com/wavesplatform/Waves.git'
 def localConfLocation = 'performance-test/local.conf'
 def localConfTemplateLocation = 'performance-test/local.conf.template'
-def localConfLocationOnNode = '/usr/share/unitoken-devnet/conf/local.conf'
+def localConfLocationOnNode = '/usr/share/waves-devnet/conf/local.conf'
 
 def applicationConfLocation = 'node-generator/src/main/resources/application.conf'
 def applicationConfTemplateLocation = 'performance-test/application.conf.template'
@@ -27,9 +27,9 @@ def applicationConfTemplateLocation = 'performance-test/application.conf.templat
 def preconditionsConfLocation = 'node-generator/src/main/resources/preconditions.conf'
 def preconditionsConfTemplateLocation = 'performance-test/preconditions.conf.template'
 
-def debFileLocationOnNode = '/tmp/unitoken_deb'
+def debFileLocationOnNode = '/tmp/waves_deb'
 def debFileLocation = ''
-def node_service_name = 'unitoken-devnet'
+def node_service_name = 'waves-devnet'
 
 properties([
     parameters([
@@ -158,7 +158,7 @@ if (currentBuild.result == Constants.PIPELINE_ABORTED){
     return
 }
 
-node('unitokennode'){
+node('wavesnode'){
     currentBuild.result = Constants.PIPELINE_SUCCESS
 
     timestamps {

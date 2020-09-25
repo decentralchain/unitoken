@@ -23,7 +23,7 @@ target
 # local settings
 localsettings.json
 *local.conf
-unitoken_logback.xml
+waves_logback.xml
 
 # Text files
 *.txt

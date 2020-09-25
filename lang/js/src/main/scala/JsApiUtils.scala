@@ -1,10 +1,10 @@
-import com.decentralchain.lang.contract.DApp
-import com.decentralchain.lang.v1.FunctionHeader.{Native, User}
-import com.decentralchain.lang.v1.compiler.CompilationError
-import com.decentralchain.lang.v1.compiler.Terms._
-import com.decentralchain.lang.v1.compiler.Types.{CASETYPEREF, FINAL, LIST, NOTHING, TYPE, UNION}
-import com.decentralchain.lang.v1.parser.Expressions
-import com.decentralchain.lang.v1.parser.Expressions.{PART, Pos, Type}
+import com.wavesplatform.lang.contract.DApp
+import com.wavesplatform.lang.v1.FunctionHeader.{Native, User}
+import com.wavesplatform.lang.v1.compiler.CompilationError
+import com.wavesplatform.lang.v1.compiler.Terms._
+import com.wavesplatform.lang.v1.compiler.Types.{CASETYPEREF, FINAL, LIST, NOTHING, TYPE, UNION}
+import com.wavesplatform.lang.v1.parser.Expressions
+import com.wavesplatform.lang.v1.parser.Expressions.{PART, Pos, Type}
 
 import scala.scalajs.js
 import scala.scalajs.js.Any

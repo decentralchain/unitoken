@@ -55,7 +55,7 @@ object ExtensionPackaging extends AutoPlugin {
       classpath := makeRelativeClasspathNames(classpathOrdering.value),
       nodePackageName := (LocalProject("node") / Linux / packageName).value,
       debianPackageDependencies := Seq((LocalProject("node") / Debian / packageName).value),
-      // To write files to unitoken NODE directory
+      // To write files to Waves NODE directory
       linuxPackageMappings := getUniversalFolderMappings(
         nodePackageName.value,
         defaultLinuxInstallLocation.value,
@@ -68,15 +68,15 @@ object ExtensionPackaging extends AutoPlugin {
              |chown -R ${nodePackageName.value}:${nodePackageName.value} /usr/share/${nodePackageName.value}""".stripMargin
       ),
       libraryDependencies ++= Dependencies.logDeps,
-      javaOptions in run ++= extensionClasses.value.zipWithIndex.map { case (extension, index) => s"-Dunitoken.extensions.$index=$extension" }
+      javaOptions in run ++= extensionClasses.value.zipWithIndex.map { case (extension, index) => s"-Dwaves.extensions.$index=$extension" }
     ) ++ nameFix ++ inScope(Global)(nameFix) ++ maintainerFix
 
   private def maintainerFix =
     inConfig(Linux)(
       Seq(
-        maintainer := "decentralchain.com",
-        packageSummary := s"unitoken node ${name.value}${network.value.packageSuffix} extension",
-        packageDescription := s"unitoken node ${name.value}${network.value.packageSuffix} extension"
+        maintainer := "wavesplatform.com",
+        packageSummary := s"Waves node ${name.value}${network.value.packageSuffix} extension",
+        packageDescription := s"Waves node ${name.value}${network.value.packageSuffix} extension"
       ))
 
   private def nameFix = Seq(

@@ -1,13 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "The Web Interface to the unitoken Full Node API",
+    "description": "The Web Interface to the Waves Full Node API",
     "version": "???",
-    "title": "unitoken Full Node (???)",
+    "title": "Waves Full Node (???)",
     "termsOfService": "",
     "license": {
       "name": "MIT License",
-      "url": "https://github.com/decentralchain/unitoken/blob/master/LICENSE"
+      "url": "https://github.com/wavesplatform/Waves/blob/master/LICENSE"
     }
   },
   "basePath": "/",
@@ -3599,7 +3599,7 @@
                 "blockId": {
                   "type": "string"
                 },
-                "unitokenBalanceHash": {
+                "wavesBalanceHash": {
                   "type": "string"
                 },
                 "assetsBalanceHash": {
@@ -3862,7 +3862,7 @@
           {
             "name": "address",
             "in": "path",
-            "description": "An address to load unitoken balance history for",
+            "description": "An address to load waves balance history for",
             "required": true,
             "type": "string"
           }
@@ -3894,14 +3894,14 @@
         }
       }
     },
-    "/debug/stateunitoken/{height}": {
+    "/debug/stateWaves/{height}": {
       "get": {
         "tags": [
           "debug"
         ],
         "summary": "Regular address balance at the height",
         "description": "Regular address balance at the height. No more than 2,000 blocks back",
-        "operationId": "stateunitoken_1",
+        "operationId": "stateWaves_1",
         "parameters": [
           {
             "name": "height",
@@ -4228,7 +4228,7 @@
           "node"
         ],
         "summary": "Version",
-        "description": "Get unitoken node version",
+        "description": "Get Waves node version",
         "operationId": "version_1",
         "parameters": [],
         "responses": {
@@ -4695,7 +4695,7 @@
         "minIncrement",
         "nextCheck",
         "term",
-        "totalunitokenAmount",
+        "totalWavesAmount",
         "votes",
         "votingInterval",
         "votingIntervalStart",
@@ -4706,7 +4706,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "totalunitokenAmount": {
+        "totalWavesAmount": {
           "type": "integer",
           "format": "int32"
         },
@@ -4854,7 +4854,7 @@
     },
     "Transaction": {
       "type": "object",
-      "description": "Transaction's json representation (see https://docs.decentralchain.com/en/blockchain/transaction/)",
+      "description": "Transaction's json representation (see https://docs.wavesplatform.com/en/blockchain/transaction/)",
       "additionalProperties": {
         "type": "object"
       },

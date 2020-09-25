@@ -1,4 +1,4 @@
-unitoken.network.traffic-logger {
+waves.network.traffic-logger {
   ignore-tx-messages = []
 }
 

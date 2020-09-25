@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 import groovy.json.JsonOutput
-import devops.unitoken.*
+import devops.waves.*
 @Library('jenkins-shared-lib')
 
 ut = new utils()
@@ -9,14 +9,14 @@ def artifactsDir="out"
 def networks
 def artifacts
 def shaSumField = "## SHA256 Checksums\n```\n"
-def user = "decentralchain"
-def repo = "unitoken"
+def user = "wavesplatform"
+def repo = "Waves"
 def repoUrl = "https://github.com/${user}/${repo}"
-def dockerImageName = "decentralchain/unitokennode"
+def dockerImageName = "wavesplatform/wavesnode"
 def dockerImage
-def unitokenVersion
+def wavesVersion
 def useNodeSbtCache = false
-def dockerRegistryCreds = 'dockerhub-unitokennode-creds'
+def dockerRegistryCreds = 'dockerhub-wavesnode-creds'
 def dockerRegistryAddress = 'https://index.docker.io/v1/'
 
 properties([
@@ -53,7 +53,7 @@ if (currentBuild.result == Constants.PIPELINE_ABORTED){
     return
 }
 
-node('unitokennode'){
+node('wavesnode'){
     currentBuild.result = Constants.PIPELINE_SUCCESS
 
     timestamps {
@@ -70,7 +70,7 @@ node('unitokennode'){
 
                 stage ('Build artifacts'){
                     dir ('docker'){
-                        unitokenVersion = tag.replace('v','')
+                        wavesVersion = tag.replace('v','')
                         def specifiedNetworks = networks.join(" ")
                         if (useNodeSbtCache){
                             def text = readFile "Dockerfile"
@@ -86,21 +86,21 @@ node('unitokennode'){
                         def dockerImageBuilder = imageIt(
                             dockerRegistryAddress: dockerRegistryAddress,
                             dockerRegistryCreds: dockerRegistryCreds,
-                            imageName: 'unitokenbuilder',
-                            dockerTag: unitokenVersion,
-                            args: "--build-arg unitoken_VERSION=${unitokenVersion} --build-arg 'DEB_PACKAGE_NETWORKS=${specifiedNetworks}' --build-arg BRANCH=${branch} --target builder --no-cache",
+                            imageName: 'wavesbuilder',
+                            dockerTag: wavesVersion,
+                            args: "--build-arg WAVES_VERSION=${wavesVersion} --build-arg 'DEB_PACKAGE_NETWORKS=${specifiedNetworks}' --build-arg BRANCH=${branch} --target builder --no-cache",
                             skipPush: true
                         )
                         dockerImage = imageIt(
                             dockerRegistryAddress: dockerRegistryAddress,
                             dockerRegistryCreds: dockerRegistryCreds,
                             imageName: dockerImageName,
-                            dockerTag: unitokenVersion,
-                            args: "--build-arg unitoken_VERSION=${unitokenVersion} --build-arg 'DEB_PACKAGE_NETWORKS=${specifiedNetworks}' --build-arg BRANCH=${branch}",
+                            dockerTag: wavesVersion,
+                            args: "--build-arg WAVES_VERSION=${wavesVersion} --build-arg 'DEB_PACKAGE_NETWORKS=${specifiedNetworks}' --build-arg BRANCH=${branch}",
                             skipPush: true
                         )
                         sh  """
-                                id=\$(docker create unitokenbuilder:${unitokenVersion})
+                                id=\$(docker create wavesbuilder:${wavesVersion})
                                 docker cp \${id}:/out "${env.WORKSPACE}"
                                 docker rm -v \${id}
                             """
@@ -123,7 +123,7 @@ node('unitokennode'){
                 }
 
                 stage ('Create a release'){
-                    withCredentials([string(credentialsId: 'unitoken-release-github-token', variable: 'token')]) {
+                    withCredentials([string(credentialsId: 'waves-release-github-token', variable: 'token')]) {
                         dir (artifactsDir + '/all'){
                             def createReleaseBody = [
                                 tag_name: "${tag}",
@@ -162,7 +162,7 @@ node('unitokennode'){
 
                 stage ('Pushing docker image'){
                     docker.withRegistry(dockerRegistryAddress, dockerRegistryCreds) {
-                        if (dockerTags.contains(unitokenVersion)){
+                        if (dockerTags.contains(wavesVersion)){
                             dockerImage.push()
                         }
                         if (dockerTags.contains('latest')){

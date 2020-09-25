@@ -1,20 +1,20 @@
 import JsApiUtils._
 import cats.kernel.Monoid
-import com.decentralchain.DocSource
-import com.decentralchain.common.utils.EitherExt2
-import com.decentralchain.lang.directives.Directive.extractDirectives
-import com.decentralchain.lang.directives.values.{DApp => DAppType, _}
-import com.decentralchain.lang.directives.{DirectiveDictionary, DirectiveParser, DirectiveSet}
-import com.decentralchain.lang.script.ScriptPreprocessor
-import com.decentralchain.lang.v1.BaseGlobal.DAppInfo
-import com.decentralchain.lang.v1.estimator.ScriptEstimator
-import com.decentralchain.lang.v1.evaluator.ctx.impl.unitoken.unitokenContext
-import com.decentralchain.lang.v1.evaluator.ctx.impl.{CryptoContext, PureContext}
-import com.decentralchain.lang.v1.repl.Repl
-import com.decentralchain.lang.v1.repl.node.http.NodeConnectionSettings
-import com.decentralchain.lang.v1.traits.Environment
-import com.decentralchain.lang.v1.{CTX, ContractLimits}
-import com.decentralchain.lang.{Global, Version}
+import com.wavesplatform.DocSource
+import com.wavesplatform.common.utils.EitherExt2
+import com.wavesplatform.lang.directives.Directive.extractDirectives
+import com.wavesplatform.lang.directives.values.{DApp => DAppType, _}
+import com.wavesplatform.lang.directives.{DirectiveDictionary, DirectiveParser, DirectiveSet}
+import com.wavesplatform.lang.script.ScriptPreprocessor
+import com.wavesplatform.lang.v1.BaseGlobal.DAppInfo
+import com.wavesplatform.lang.v1.estimator.ScriptEstimator
+import com.wavesplatform.lang.v1.evaluator.ctx.impl.waves.WavesContext
+import com.wavesplatform.lang.v1.evaluator.ctx.impl.{CryptoContext, PureContext}
+import com.wavesplatform.lang.v1.repl.Repl
+import com.wavesplatform.lang.v1.repl.node.http.NodeConnectionSettings
+import com.wavesplatform.lang.v1.traits.Environment
+import com.wavesplatform.lang.v1.{CTX, ContractLimits}
+import com.wavesplatform.lang.{Global, Version}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -26,8 +26,8 @@ import scala.scalajs.js.{Any, Dictionary, Promise, UndefOr}
 
 object JsAPI {
 
-  private def unitokenContext(v: StdLibVersion, isTokenContext: Boolean, isContract: Boolean) =
-    unitokenContext.build(
+  private def wavesContext(v: StdLibVersion, isTokenContext: Boolean, isContract: Boolean) =
+    WavesContext.build(
       DirectiveSet(v, ScriptType.isAssetScript(isTokenContext), if (isContract) DAppType else Expression)
         .explicitGet()
     )
@@ -42,10 +42,10 @@ object JsAPI {
       .toMap
 
   private def buildScriptContext(v: StdLibVersion, isTokenContext: Boolean, isContract: Boolean): CTX[Environment] =
-    Monoid.combineAll(Seq(pureContext(v), cryptoContext(v), unitokenContext(v, isTokenContext, isContract)))
+    Monoid.combineAll(Seq(pureContext(v), cryptoContext(v), wavesContext(v, isTokenContext, isContract)))
 
   private def buildContractContext(v: StdLibVersion): CTX[Environment] =
-    Monoid.combineAll(Seq(pureContext(v), cryptoContext(v), unitokenContext(v, false, true)))
+    Monoid.combineAll(Seq(pureContext(v), cryptoContext(v), wavesContext(v, false, true)))
 
   @JSExportTopLevel("getTypes")
   def getTypes(ver: Int = 2, isTokenContext: Boolean = false, isContract: Boolean = false): js.Array[js.Object with js.Dynamic] =

@@ -14,9 +14,9 @@ val langPublishSettings = Seq(
   coverageExcludedPackages := "",
   publishMavenStyle := true,
   publishTo := Some("Sonatype Nexus" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"),
-  homepage := Some(url("https://docs.decentralchain.com/en/technical-details/unitoken-contracts-language-description/maven-compiler-package.html")),
+  homepage := Some(url("https://docs.wavesplatform.com/en/technical-details/waves-contracts-language-description/maven-compiler-package.html")),
   developers := List(
-    Developer("petermz", "Peter Zhelezniakov", "peterz@rambler.ru", url("https://decentralchain.com"))
+    Developer("petermz", "Peter Zhelezniakov", "peterz@rambler.ru", url("https://wavesplatform.com"))
   )
 )
 
@@ -33,7 +33,7 @@ lazy val lang =
           sourceGenerators += Tasks.docSource,
           PB.targets += scalapb.gen(flatPackage = true) -> (sourceManaged).value,
           PB.protoSources := Seq(PB.externalIncludePath.value, baseDirectory.value.getParentFile / "shared" / "src" / "main" / "protobuf"),
-          includeFilter in PB.generate := new SimpleFileFilter((f: File) => f.getName == "DAppMeta.proto" || (f.getName.endsWith(".proto") && f.getParent.endsWith("unitoken"))),
+          includeFilter in PB.generate := new SimpleFileFilter((f: File) => f.getName == "DAppMeta.proto" || (f.getName.endsWith(".proto") && f.getParent.endsWith("waves"))),
           PB.deleteTargetDirectory := false
         )
       )
@@ -96,12 +96,12 @@ lazy val root = (project in file("."))
 inScope(Global)(
   Seq(
     scalaVersion := "2.13.3",
-    organization := "com.decentralchain",
-    organizationName := "unitoken Platform",
+    organization := "com.wavesplatform",
+    organizationName := "Waves Platform",
     V.fallback := (1, 2, 12),
-    organizationHomepage := Some(url("https://decentralchain.com")),
-    scmInfo := Some(ScmInfo(url("https://github.com/decentralchain/unitoken"), "git@github.com:decentralchain/unitoken.git", None)),
-    licenses := Seq(("MIT", url("https://github.com/decentralchain/unitoken/blob/master/LICENSE"))),
+    organizationHomepage := Some(url("https://wavesplatform.com")),
+    scmInfo := Some(ScmInfo(url("https://github.com/wavesplatform/Waves"), "git@github.com:wavesplatform/Waves.git", None)),
+    licenses := Seq(("MIT", url("https://github.com/wavesplatform/Waves/blob/master/LICENSE"))),
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
